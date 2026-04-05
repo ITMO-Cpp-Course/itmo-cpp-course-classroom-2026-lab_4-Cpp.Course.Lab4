@@ -3,6 +3,7 @@
 #include "resource/ResourceManager.hpp"
 #include <catch2/catch_all.hpp>
 
+#include <cstdio>
 #include <filesystem>
 
 namespace fs = std::filesystem;
@@ -25,9 +26,9 @@ TEST_CASE("ResourceError is std::runtime_error", "[ResourceError]")
     {
         throw lab4::resource::ResourceError("error");
     }
-    catch (const std::runtime_error& error)
+    catch (const std::runtime_error& err)
     {
-        REQUIRE(std::string(error.what()) == "error");
+        REQUIRE(std::string(err.what()) == "error");
     }
 }
 
@@ -151,6 +152,15 @@ TEST_CASE("FileHandle get() returns raw FILE*", "[FileHandle]")
     {
         lab4::resource::FileHandle fh(path, "w");
         REQUIRE(fh.get() != nullptr);
+
+        fh.write("via get() test");
+
+        std::fflush(fh.get());
+    }
+
+    {
+        lab4::resource::FileHandle fh(path, "r");
+        REQUIRE(fh.read_all() == "via get() test");
     }
 
     try_remove(path);

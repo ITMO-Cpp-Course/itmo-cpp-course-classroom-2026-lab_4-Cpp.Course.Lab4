@@ -71,7 +71,7 @@ void FileHandle::write(const std::string& data)
     {
         throw ResourceError("File opened for reading only");
     }
-    if (std::fputs(data.c_str(), file_.get()) == EOF)
+    if (std::fputs(data.c_str(), get()) == EOF)
     {
         throw ResourceError("Failed to write to file");
     }
@@ -84,21 +84,21 @@ std::string FileHandle::read_all()
         throw ResourceError("File is not open");
     }
 
-    if (std::fseek(file_.get(), 0, SEEK_END) != 0)
+    if (std::fseek(get(), 0, SEEK_END) != 0)
     {
         throw ResourceError("Failed to seek file");
     }
 
-    long size = std::ftell(file_.get());
+    long size = std::ftell(get());
     if (size < 0)
     {
         throw ResourceError("Failed to get file size");
     }
 
-    std::fseek(file_.get(), 0, SEEK_SET);
+    std::fseek(get(), 0, SEEK_SET);
 
     std::string result(static_cast<size_t>(size), '\0');
-    size_t read = std::fread(result.data(), 1, static_cast<size_t>(size), file_.get());
+    size_t read = std::fread(result.data(), 1, static_cast<size_t>(size), get());
     if (static_cast<long>(read) != size)
     {
         throw ResourceError("Failed to read file");
