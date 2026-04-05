@@ -83,11 +83,27 @@ std::string FileHandle::read_all()
     {
         throw ResourceError("File is not open");
     }
-    std::fseek(file_.get(), 0, SEEK_END);
+
+    if (std::fseek(file_.get(), 0, SEEK_END) != 0)
+    {
+        throw ResourceError("Failed to seek file");
+    }
+
     long size = std::ftell(file_.get());
+    if (size < 0)
+    {
+        throw ResourceError("Failed to get file size");
+    }
+
     std::fseek(file_.get(), 0, SEEK_SET);
-    std::string result(size, '\0');
-    std::fread(result.data(), 1, size, file_.get());
+
+    std::string result(static_cast<size_t>(size), '\0');
+    size_t read = std::fread(result.data(), 1, static_cast<size_t>(size), file_.get());
+    if (static_cast<long>(read) != size)
+    {
+        throw ResourceError("Failed to read file");
+    }
+
     return result;
 }
 
