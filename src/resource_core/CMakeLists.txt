@@ -15,3 +15,5 @@ target_include_directories(resource_core
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+target_compile_definitions(resource_core PRIVATE _CRT_SECURE_NO_WARNINGS)

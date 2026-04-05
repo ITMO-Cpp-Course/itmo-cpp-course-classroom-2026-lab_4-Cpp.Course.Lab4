@@ -7,10 +7,12 @@
 #include <string>
 #include <unordered_map>
 
-namespace lab4::resource {
+namespace lab4::resource
+{
 
-class ResourceManager {
-public:
+class ResourceManager
+{
+  public:
     ResourceManager() = default;
 
     ResourceManager(const ResourceManager&) = delete;
@@ -19,7 +21,13 @@ public:
     ResourceManager(ResourceManager&&) noexcept = default;
     ResourceManager& operator=(ResourceManager&&) noexcept = default;
 
-private:
+    std::shared_ptr<FileHandle> acquire(const std::string& path, const std::string& mode);
+    void release(const std::string& path);
+    void cleanup();
+    std::size_t cache_size() const;
+    bool contains(const std::string& path) const;
+
+  private:
     mutable std::shared_mutex mutex_;
     std::unordered_map<std::string, std::weak_ptr<FileHandle>> cache_;
 };

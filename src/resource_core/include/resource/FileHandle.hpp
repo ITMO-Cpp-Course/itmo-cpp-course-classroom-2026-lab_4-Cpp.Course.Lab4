@@ -1,13 +1,15 @@
 #pragma once
 
-#include <string>
-#include <memory>
 #include <cstdio>
+#include <memory>
+#include <string>
 
-namespace lab4::resource {
+namespace lab4::resource
+{
 
-class FileHandle {
-public:
+class FileHandle
+{
+  public:
     FileHandle();
     explicit FileHandle(const std::string& path, const std::string& mode = "r");
 
@@ -19,13 +21,23 @@ public:
 
     ~FileHandle();
 
-private:
-    struct FileCloser {
+    void open(const std::string& path, const std::string& mode);
+    void close();
+    bool is_open() const;
+    const std::string& path() const;
+    void write(const std::string& data);
+    std::string read_all();
+    FILE* get() const;
+
+  protected:
+    struct FileCloser
+    {
         void operator()(FILE* f) const;
     };
 
     std::unique_ptr<FILE, FileCloser> file_;
     std::string path_;
+    std::string mode_;
 };
 
 } // namespace lab4::resource
