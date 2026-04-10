@@ -19,7 +19,7 @@ std::shared_ptr<FileHandle> ResourceManager::get_resource(const std::string& pat
     return resource;
 }
 
-void ResourceManager::collect_garbage()
+void ResourceManager::clear_everything()
 {
     cache.clear();
 }

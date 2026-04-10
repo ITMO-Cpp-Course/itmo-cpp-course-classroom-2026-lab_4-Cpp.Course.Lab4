@@ -1,5 +1,5 @@
 #include "FileHandle.hpp"
-#include "resource_error.hpp"
+#include "ResourceError.hpp"
 #include <iostream>
 
 namespace lab4::resource

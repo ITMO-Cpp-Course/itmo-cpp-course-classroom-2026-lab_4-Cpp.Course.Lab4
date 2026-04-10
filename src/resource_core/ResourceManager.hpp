@@ -2,7 +2,7 @@
 
 #include "FileHandle.hpp"
 #include <map>
-#include <memory> // ╨Ф╨╗╤П ╤Г╨╝╨╜╤Л╤Е ╤Г╨║╨░╨╖╨░╤В╨╡╨╗╨╡╨╣
+#include <memory>
 #include <string>
 
 namespace lab4::resource
@@ -20,7 +20,7 @@ class ResourceManager
     std::shared_ptr<FileHandle> get_resource(const std::string& path);
 
     // Метод для очистки кеша (принудительное закрытие всех файлов)
-    void collect_garbage();
+    void clear_everything();
 
     // Запрещаем копирование менеджера, потому что менеджер ресурсов должен быть один
     ResourceManager(const ResourceManager&) = delete;

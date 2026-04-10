@@ -30,7 +30,7 @@ class FileHandle
     {
         return handle;
     }
-    bool is_valid() const
+    bool ready_for_use() const
     {
         return handle != nullptr;
     }

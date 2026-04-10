@@ -1,8 +1,7 @@
 add_library(resource_core STATIC
         FileHandle.cpp
         ResourceManager.cpp
-        resource_error.hpp
-        ResourceManager.hpp
+
 )
 
 target_link_libraries(resource_core PRIVATE project_warnings)

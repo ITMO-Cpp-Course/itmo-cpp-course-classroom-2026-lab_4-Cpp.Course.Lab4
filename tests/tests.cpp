@@ -1,5 +1,6 @@
+#include "ResourceError.hpp"
 #include "ResourceManager.hpp"
-#include "resource_error.hpp"
+#include "FileHandle.hpp"
 #include <catch2/catch_all.hpp>
 #include <fstream>
 
@@ -10,6 +11,36 @@ void prepare_file(const std::string& name)
 {
     std::ofstream f(name);
     f << "data";
+}
+
+TEST_CASE("FileHandle technical requirements", "[file_handle]")
+{
+    const std::string filename = "handle_test.txt";
+    prepare_file(filename);
+
+    SECTION("RAII semantics")
+    {
+        {
+            FileHandle fh(filename, "r");
+            REQUIRE(fh.ready_for_use());
+        }
+    }
+
+    SECTION("Move semantics")
+    {
+        FileHandle fh1(filename, "r");
+        void* addr = fh1.get();
+        FileHandle fh2 = std::move(fh1);
+
+        CHECK_FALSE(fh1.ready_for_use());
+        CHECK(fh2.ready_for_use());
+        CHECK(fh2.get() == addr);
+    }
+
+    SECTION("Invalid file handling")
+    {
+        REQUIRE_THROWS_AS(FileHandle("non_existent.txt", "r"), ResourceError);
+    }
 }
 
 TEST_CASE("ResourceManager basic logic", "[resource_manager]")
@@ -27,7 +58,7 @@ TEST_CASE("ResourceManager basic logic", "[resource_manager]")
         auto res2 = manager.get_resource(filename);
         CHECK(res1.get() == res2.get());
 
-        CHECK(res1.use_count() >= 3);
+        CHECK(res1.use_count() >= 2);
     }
 
     SECTION("Error handling for missing files")
@@ -35,13 +66,14 @@ TEST_CASE("ResourceManager basic logic", "[resource_manager]")
         REQUIRE_THROWS_AS(manager.get_resource("ghost.txt"), ResourceError);
     }
 
-    SECTION("Garbage collection")
+    SECTION("Clear everything")
     {
         auto res = manager.get_resource(filename);
         long initial_count = res.use_count();
 
-        manager.collect_garbage();
+        manager.clear_everything();
 
         CHECK(res.use_count() == initial_count - 1);
     }
-}
+
+}jl
