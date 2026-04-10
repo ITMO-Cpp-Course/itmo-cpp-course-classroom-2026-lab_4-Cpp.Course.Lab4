@@ -1,3 +1,4 @@
+block()
 include(FetchContent)
 
 FetchContent_Declare(
@@ -17,3 +18,4 @@ if (TARGET project_sanitizers)
 endif ()
 
 add_test(NAME resource_tests COMMAND resource_tests)
+endblock()

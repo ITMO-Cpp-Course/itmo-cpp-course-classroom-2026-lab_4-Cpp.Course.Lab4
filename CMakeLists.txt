@@ -1,43 +1,41 @@
 cmake_minimum_required(VERSION 3.20)
+project(lab4_resource_core VERSION 1.0.0 LANGUAGES CXX)
 
-project(Lab4 LANGUAGES CXX)
-
-# C++ standard
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Options
-option(STRICT_WARNINGS "Enable extra warnings and treat warnings as errors" ON)
-option(ENABLE_SANITIZERS "Enable AddressSanitizer" ON)
-
-# Common warnings
-add_library(project_warnings INTERFACE)
-if (MSVC)
-    target_compile_options(project_warnings INTERFACE
-            /W4 /permissive- /Zc:preprocessor /Zc:__cplusplus /utf-8
-            $<$<BOOL:${STRICT_WARNINGS}>:/WX>
-    )
-else ()
-    target_compile_options(project_warnings INTERFACE
-            -Wall -Wextra -Wpedantic
-            -Wconversion -Wsign-conversion -Wshadow
-            -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual
-            -Wnull-dereference -Wdouble-promotion -Wformat=2
-            $<$<BOOL:${STRICT_WARNINGS}>:-Werror>
-    )
-endif ()
-
-include(CTest)
-enable_testing()
-
-# AddressSanitizer (ASan) as an interface target
-# Sanitizers are not supported on Windows (neither MSVC nor MinGW)
-if (ENABLE_SANITIZERS AND NOT WIN32)
-    add_library(project_sanitizers INTERFACE)
-    target_compile_options(project_sanitizers INTERFACE $<$<CONFIG:Debug>:-fsanitize=address -fno-omit-frame-pointer>)
-    target_link_options(project_sanitizers INTERFACE    $<$<CONFIG:Debug>:-fsanitize=address>)
-endif ()
+option(BUILD_TESTS "Build unit tests" ON)
 
 add_subdirectory(src/resource_core)
-add_subdirectory(tests)
+
+if (BUILD_TESTS)
+    enable_testing()
+
+    include(FetchContent)
+    FetchContent_Declare(
+            Catch2
+            GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+            GIT_TAG v3.5.2
+    )
+    FetchContent_MakeAvailable(Catch2)
+
+    add_executable(resource_core_tests
+            tests/tests.cpp
+            src/resource_core/ResourceError.cpp
+            include/resource_core/FileHandle.hpp
+            include/resource_core/ResourceManager.hpp
+    )
+
+    target_link_libraries(resource_core_tests
+            PRIVATE
+            resource_core
+            Catch2::Catch2WithMain
+    )
+
+    target_include_directories(resource_core_tests PRIVATE include)
+
+    include(CTest)
+    include(Catch)
+    catch_discover_tests(resource_core_tests)
+endif ()
