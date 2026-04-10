@@ -1,6 +1,6 @@
+#include "FileHandle.hpp"
 #include "ResourceError.hpp"
 #include "ResourceManager.hpp"
-#include "FileHandle.hpp"
 #include <catch2/catch_all.hpp>
 #include <fstream>
 
@@ -75,5 +75,4 @@ TEST_CASE("ResourceManager basic logic", "[resource_manager]")
 
         CHECK(res.use_count() == initial_count - 1);
     }
-
-}jl
+}
