@@ -5,10 +5,12 @@
 #include <cstdio>
 #include <string>
 
-namespace lab4::resource {
+namespace lab4::resource
+{
 
-class FileHandle {
-public:
+class FileHandle
+{
+  public:
     FileHandle(const std::string& path, const std::string& mode);
     ~FileHandle();
 
@@ -25,7 +27,7 @@ public:
     void write(const std::string& data);
     void close() noexcept;
 
-private:
+  private:
     std::FILE* file_;
     std::string path_;
 };
