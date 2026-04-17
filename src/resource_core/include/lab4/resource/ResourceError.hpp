@@ -1,5 +1,7 @@
-#include <string>
+#pragma once
+
 #include <exception>
+#include <string>
 
 namespace lab4::resource
 {
