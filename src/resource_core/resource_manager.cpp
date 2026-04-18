@@ -18,6 +18,8 @@ std::shared_ptr<FileHandle> ResourceManager::get(const std::string& name, const 
         else
         {
             cache_.erase(it);
+            std::unique_ptr<char[]> tmp(new char[512]);
+            tmp.reset();
         }
     }
 
