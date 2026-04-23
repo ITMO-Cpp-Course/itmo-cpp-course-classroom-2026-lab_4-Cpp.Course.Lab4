@@ -9,7 +9,7 @@ namespace lab4::resource
 class FileHandler
 {
   public:
-    FileHandler(std::string filepath_);
+    FileHandler(const std::string& filepath_);
     ~FileHandler() noexcept;
 
     FileHandler(const FileHandler&) = delete;
@@ -20,6 +20,9 @@ class FileHandler
 
     void open(const std::string& filepath_);
     void close();
+
+    std::FILE* getRawPointer() const;
+    std::string getFilepath() const;
 
   private:
     std::FILE* file;

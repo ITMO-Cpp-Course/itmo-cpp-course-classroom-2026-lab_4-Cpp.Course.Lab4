@@ -1,10 +1,15 @@
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS // in order to use fopen instead of fopen_s
+#endif
+
 #include "lab4/resource/FileHandler.hpp"
 #include <lab4/resource/ResourceError.hpp>
+#include <cstdio>
 
 namespace lab4::resource
 {
 
-FileHandler::FileHandler(std::string filepath_) : file{nullptr}, filepath{}
+FileHandler::FileHandler(const std::string& filepath_) : file{nullptr}, filepath{}
 {
     openFile(filepath_);
 }
@@ -50,12 +55,11 @@ void FileHandler::close()
         return;
     }
     closeFile();
-    filepath = "";
 }
 
 void FileHandler::openFile(const std::string& filepath_)
 {
-    std::FILE* f = std::fopen(filepath_.c_str(), "r");
+    std::FILE* f = fopen(filepath_.c_str(), "r");
 
     if (!f)
     {
@@ -72,7 +76,18 @@ void FileHandler::closeFile() noexcept
     {
         std::fclose(file);
         file = nullptr;
+        filepath = "";
     }
+}
+
+std::FILE* FileHandler::getRawPointer() const
+{
+    return file;
+}
+
+std::string FileHandler::getFilepath() const
+{
+    return filepath;
 }
 
 } // namespace lab4::resource

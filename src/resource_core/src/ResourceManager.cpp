@@ -19,7 +19,7 @@ void ResourceManager::clearExpired()
     }
 }
 
-std::shared_ptr<FileHandler> ResourceManager::getResource(std::string filepath_)
+std::shared_ptr<FileHandler> ResourceManager::getResource(const std::string& filepath_)
 {
     auto it = data.find(filepath_);
 
@@ -46,17 +46,26 @@ std::shared_ptr<FileHandler> ResourceManager::getResource(std::string filepath_)
     }
     catch (const ResourceError& e)
     {
-        throw;
+        throw e;
     }
 }
 
-void ResourceManager::deleteResource(std::string filepath_)
+void ResourceManager::deleteResource(const std::string& filepath_)
 {
     auto it = data.find(filepath_);
     if (it != data.end())
     {
         data.erase(it);
     }
+    else
+    {
+        throw ResourceError("File is not cached!");
+    }
+}
+
+std::size_t ResourceManager::getDataSize() const
+{
+    return data.size();
 }
 
 } // namespace lab4::resource
