@@ -3,8 +3,8 @@
 #endif
 
 #include "lab4/resource/FileHandler.hpp"
-#include <lab4/resource/ResourceError.hpp>
 #include <cstdio>
+#include <lab4/resource/ResourceError.hpp>
 
 namespace lab4::resource
 {

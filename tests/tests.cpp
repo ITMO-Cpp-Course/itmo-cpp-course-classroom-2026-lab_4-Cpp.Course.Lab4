@@ -1,9 +1,9 @@
 #include <catch2/catch_all.hpp>
+#include <cstdio>
+#include <fstream>
+#include <lab4/resource/FileHandler.hpp>
 #include <lab4/resource/ResourceError.hpp>
 #include <lab4/resource/ResourceManager.hpp>
-#include <lab4/resource/FileHandler.hpp>
-#include <fstream>
-#include <cstdio>
 
 class TestFile
 {
@@ -114,7 +114,7 @@ TEST_CASE("ResouceManager caching", "[ResourceManager]")
     {
         TestFile file{"test.txt", ""};
         lab4::resource::ResourceManager manager{};
-        
+
         auto handler1 = manager.getResource("test.txt");
         auto handler2 = manager.getResource("test.txt");
 
@@ -141,7 +141,7 @@ TEST_CASE("ResouceManager caching", "[ResourceManager]")
         TestFile file{"test.txt", ""};
         lab4::resource::ResourceManager manager{};
         auto handler = manager.getResource("test.txt");
-        
+
         manager.deleteResource("test.txt");
 
         REQUIRE(manager.getDataSize() == 0);
