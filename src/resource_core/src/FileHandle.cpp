@@ -12,6 +12,15 @@ FileHandle::FileHandle(const std::string& path) : path_(path)
         throw ResourceError(path_);
     }
 }
+FileHandle::FileHandle(FileHandle&& other) noexcept : path_(std::move(other.path_)) {}
+FileHandle& FileHandle::operator=(FileHandle&& other) noexcept
+{
+    if (this != &other)
+    {
+        path_ = std::move(other.path_);
+    }
+    return *this;
+}
 FileHandle::~FileHandle()
 {
     if (file_.is_open())
