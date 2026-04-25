@@ -15,9 +15,9 @@ class FileHandle
     ~FileHandle();
     FileHandle(const FileHandle&) = delete;
     FileHandle& operator=(const FileHandle&) = delete;
+    FileHandle(FileHandle&& other) noexcept = default;
+    FileHandle& operator=(FileHandle&& other) noexcept = default;
     const std::string& getPath() const;
     bool isOpen() const;
-    FileHandle(FileHandle&& other) noexcept;
-    FileHandle& operator=(FileHandle&& other) noexcept;
 };
 } // namespace lab4::resource
