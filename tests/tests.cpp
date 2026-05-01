@@ -1,4 +1,4 @@
-#include "/Users/iaroslav/CLionProjects/lab-4-Iaroslav382/src/resource_core/resource_core.h"
+#include "resource_core.h"
 #include <catch2/catch_all.hpp>
 #include <filesystem>
 
