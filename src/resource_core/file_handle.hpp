@@ -5,9 +5,10 @@ namespace lab4::resource
 {
 class FileHandle
 {
-private:
+  private:
     std::FILE* file_ptr;
-    public:
+
+  public:
     FileHandle(const std::string& path, const std::string& mode);
     ~FileHandle();
     FileHandle(const FileHandle&) = delete;
@@ -16,5 +17,5 @@ private:
     FileHandle& operator=(FileHandle&& other) noexcept;
     [[nodiscard]] std::FILE* Get() const;
 };
-}
+} // namespace lab4::resource
 #endif // LAB_4_OVCINNIKOVIVAN86_FILE_HANDLE_HPP
