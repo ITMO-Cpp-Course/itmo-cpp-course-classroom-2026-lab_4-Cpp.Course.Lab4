@@ -1,4 +1,11 @@
-add_library(resource_core STATIC)
+add_library(resource_core STATIC
+        resource_error.hpp
+        file_handle.hpp
+        file_handle.cpp
+        file_handle.hpp
+        resource_manager.hpp
+        resource_manager.cpp
+)
 
 target_link_libraries(resource_core PRIVATE project_warnings)
 if (TARGET project_sanitizers)
