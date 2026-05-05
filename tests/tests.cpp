@@ -1,5 +1,5 @@
-#include "../src/resource_core/resource_error.hpp"
-#include "../src/resource_core/resource_manager.hpp"
+#include "resource_core/resource_error.hpp"
+#include "resource_core/resource_manager.hpp"
 #include <catch2/catch_all.hpp>
 
 using namespace lab4::resource;

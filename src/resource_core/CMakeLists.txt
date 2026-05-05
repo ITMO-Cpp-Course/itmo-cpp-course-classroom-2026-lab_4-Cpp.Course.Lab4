@@ -1,8 +1,5 @@
 add_library(resource_core STATIC
-        resource_error.hpp
-        file_handle.hpp
         file_handle.cpp
-        file_handle.hpp
         resource_manager.hpp
         resource_manager.cpp
 )
@@ -15,4 +12,5 @@ endif ()
 target_include_directories(resource_core
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/src
 )
