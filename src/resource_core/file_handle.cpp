@@ -19,17 +19,6 @@ FileHandle::~FileHandle()
         file_ptr = nullptr;
     }
 }
-FileHandle::FileHandle(FileHandle&& other) noexcept : file_ptr(std::exchange(other.file_ptr, nullptr)) {}
-FileHandle& FileHandle::operator=(FileHandle&& other) noexcept
-{
-    if (this != &other)
-    {
-        if (file_ptr)
-            std::fclose(file_ptr);
-        file_ptr = std::exchange(other.file_ptr, nullptr);
-    }
-    return *this;
-}
 
 std::FILE* FileHandle::Get() const
 {
