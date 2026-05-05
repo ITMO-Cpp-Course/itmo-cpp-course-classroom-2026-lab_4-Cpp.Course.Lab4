@@ -1,43 +1,37 @@
 #include "../src/resource_core/resource_error.hpp"
 #include "../src/resource_core/resource_manager.hpp"
-#include <iostream>
+#include <catch2/catch_all.hpp>
 
 using namespace lab4::resource;
 
-int main()
+TEST_CASE("Проверка работы кеша и разделяемого использования", "[ResourceManager]")
 {
+    ResourceManager manager;
 
-    try
-    {
-        ResourceManager manager;
-        std::cout << "--- Тест 1: Успешное открытие ---" << std::endl;
+    std::shared_ptr<FileHandle> file1 = manager.GetFile("test.txt", "w");
+    std::shared_ptr<FileHandle> file2 = manager.GetFile("test.txt", "w");
 
-        FileHandle& file = manager.GetFile("test.txt", "w");
+    REQUIRE(file1 == file2);
+    REQUIRE(manager.IsOpened("test.txt") == true);
+}
 
-        std::fprintf(file.Get(), "Hello, RAII world!\n");
-        std::cout << "Данные успешно записаны в test.txt" << std::endl;
+TEST_CASE("Проверка времени жизни (RAII)", "[ResourceManager]")
+{
+    ResourceManager manager;
 
-        std::cout << "\n--- Тест 2: Повторное получение ---" << std::endl;
-        if (manager.IsOpened("test.txt"))
-        {
-            std::cout << "Менеджер подтверждает: файл test.txt уже открыт." << std::endl;
-        }
+    std::shared_ptr<FileHandle> file1 = manager.GetFile("test.txt", "w");
+    std::shared_ptr<FileHandle> file2 = manager.GetFile("test.txt", "w");
 
-        std::cout << "\n--- Тест 3: Обработка ошибки ---" << std::endl;
-        manager.GetFile("non_existent_file.txt", "r");
-    }
-    catch (const ResourceError& e)
-    {
+    file1.reset();
+    REQUIRE(manager.IsOpened("test.txt") == true);
 
-        std::cerr << "Поймали исключение: " << e.what() << std::endl;
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Неизвестная ошибка: " << e.what() << std::endl;
-    }
+    file2.reset();
+    REQUIRE(manager.IsOpened("test.txt") == false);
+}
 
-    std::cout << "\n--- Тест 4: Завершение программы ---" << std::endl;
-    std::cout << "Сейчас менеджер выйдет из области видимости и сам закроет все файлы." << std::endl;
+TEST_CASE("Проверка обработки ошибок", "[ResourceManager]")
+{
+    ResourceManager manager;
 
-    return 0;
+    REQUIRE_THROWS_AS(manager.GetFile("invalid_directory/non_existent.txt", "r"), ResourceError);
 }

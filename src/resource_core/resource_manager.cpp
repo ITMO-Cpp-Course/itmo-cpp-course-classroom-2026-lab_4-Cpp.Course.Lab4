@@ -4,20 +4,21 @@
 namespace lab4::resource
 {
 
-FileHandle& ResourceManager::GetFile(const std::string& path, const std::string& mode)
+std::shared_ptr<FileHandle> ResourceManager::GetFile(const std::string& path, const std::string& mode)
 {
     auto it = m_resources.find(path);
 
     if (it != m_resources.end())
     {
-        return it->second;
+        if (std::shared_ptr<FileHandle> shared = it->second.lock())
+        {
+            return shared;
+        }
     }
 
-    FileHandle new_handle(path, mode);
-
-    auto [inserted_it, success] = m_resources.insert({path, std::move(new_handle)});
-
-    return inserted_it->second;
+    auto new_handle = std::make_shared<FileHandle>(path, mode);
+    m_resources[path] = new_handle;
+    return new_handle;
 }
 
 void ResourceManager::ReleaseFile(const std::string& path)
@@ -28,7 +29,12 @@ void ResourceManager::ReleaseFile(const std::string& path)
 
 bool ResourceManager::IsOpened(const std::string& path) const
 {
-    return m_resources.find(path) != m_resources.end();
+    auto it = m_resources.find(path);
+    if (it != m_resources.end())
+    {
+        return !it->second.expired();
+    }
+    return false;
 }
 
 } // namespace lab4::resource

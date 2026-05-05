@@ -9,7 +9,7 @@ namespace lab4::resource
 class ResourceManager
 {
   private:
-    std::map<std::string, FileHandle> m_resources;
+    std::map<std::string, std::weak_ptr<FileHandle>> m_resources;
 
   public:
     ResourceManager() = default;
@@ -17,7 +17,7 @@ class ResourceManager
     ResourceManager& operator=(const ResourceManager&) = delete;
     ResourceManager(ResourceManager&&) noexcept = default;
     ResourceManager& operator=(ResourceManager&&) noexcept = default;
-    FileHandle& GetFile(const std::string& path, const std::string& mode);
+    std::shared_ptr<FileHandle> GetFile(const std::string& path, const std::string& mode);
     void ReleaseFile(const std::string& path);
     [[nodiscard]] bool IsOpened(const std::string& path) const;
 };
