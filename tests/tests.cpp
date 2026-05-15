@@ -1,5 +1,5 @@
-#include "Lab_cpp\lab-4-znormalnyj-dot-1\src\resource_core\include\resource_core\ResourceManager.hpp"
-#include "Lab_cpp\lab-4-znormalnyj-dot-1\src\resource_core\include\resource_core\resource_err.hpp"
+#include "resource_core/ResourceManager.hpp"
+#include "resource_core/resource_err.hpp"
 #include <catch2/catch_all.hpp>
 #include <fsream>
 

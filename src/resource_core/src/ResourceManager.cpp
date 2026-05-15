@@ -1,5 +1,4 @@
-#include "Lab_cpp\lab-4-znormalnyj-dot-1\src\resource_core\include\resource_core\ResourceManager.hpp"
-
+#include "resource_core/ResourceManager.hpp"
 namespace lab4::resource
 {
 

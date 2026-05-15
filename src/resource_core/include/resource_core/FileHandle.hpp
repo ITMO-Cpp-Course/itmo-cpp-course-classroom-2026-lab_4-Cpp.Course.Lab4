@@ -1,5 +1,5 @@
 #pragma once
-#include "Lab_cpp\lab-4-znormalnyj-dot-1\src\resource_core\include\resource_core\resource_err.hpp"
+#include "resource_err.hpp"
 #include <cstdio>
 #include <string>
 

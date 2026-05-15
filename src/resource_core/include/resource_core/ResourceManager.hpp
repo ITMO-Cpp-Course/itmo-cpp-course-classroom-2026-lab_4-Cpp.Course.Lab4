@@ -1,5 +1,5 @@
 #pragma once
-#include "Lab_cpp\lab-4-znormalnyj-dot-1\src\resource_core\include\resource_core\FileHandle.hpp" 
+#include "FileHandle.hpp"
 #include <map>
 #include <memory>
 #include <string>
