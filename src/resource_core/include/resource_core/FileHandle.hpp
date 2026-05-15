@@ -1,5 +1,5 @@
 #pragma once
-#include "resource_err.hpp"
+#include "resource_core/resource_err.hpp"
 #include <cstdio>
 #include <string>
 
